@@ -1,1 +1,2 @@
-# SE2
+# Software Engineering Semester
+Team B
