@@ -2,5 +2,4 @@
 Team B 
 
 Bike Shop
-.Net Core 2.2 Web App
-
+.Net Core 3.1 API
