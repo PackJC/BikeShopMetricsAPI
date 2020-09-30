@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ECHO\\source\\repos\\SE2Project\\SE2Project\\SE2Project.csproj",
-      "projectName": "SE2Project",
-      "projectPath": "C:\\Users\\ECHO\\source\\repos\\SE2Project\\SE2Project\\SE2Project.csproj",
+      "projectUniqueName": "C:\\Users\\ECHO\\Documents\\GitHub\\SE2\\MetricsAPI.csproj",
+      "projectName": "MetricsAPI",
+      "projectPath": "C:\\Users\\ECHO\\Documents\\GitHub\\SE2\\MetricsAPI.csproj",
       "packagesPath": "C:\\Users\\ECHO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ECHO\\source\\repos\\SE2Project\\SE2Project\\obj\\",
+      "outputPath": "C:\\Users\\ECHO\\Documents\\GitHub\\SE2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
