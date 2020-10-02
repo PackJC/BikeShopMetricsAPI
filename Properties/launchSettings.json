@@ -1,0 +1,13 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "MetricConnection": "data source=segfault.asuscomm.com:1521/ocrl.asuscomm.com;password=segfault4350;user id=BIKE_SHOP;"
+  },
+  "AllowedHosts": "*"
+}
