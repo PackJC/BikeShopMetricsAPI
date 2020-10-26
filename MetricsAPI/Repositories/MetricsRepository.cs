@@ -259,7 +259,7 @@ namespace BikeShopAPI.Repositories
         /// <returns></returns>
         public IDbConnection GetConnection()
         {
-            var connectionString = configuration.GetSection("ConnectionStrings").GetSection("MetricsConnection").Value;
+            var connectionString = "data source=segfault.asuscomm.com:1522/orcl.asuscomm.com;password=segfault4350;user id=Metric;";
             var conn = new OracleConnection(connectionString);
             return conn;
         }
