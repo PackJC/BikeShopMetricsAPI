@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BikeShopAPI.Repositories;
 using System.Text.Json;
+using Microsoft.AspNetCore.Cors;
 
 namespace BikeShopAPI.Controllers
 {
@@ -25,6 +26,7 @@ namespace BikeShopAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class MetricsController : ControllerBase
     {
         /// <summary>
@@ -42,6 +44,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="table"></param>
         /// <returns></returns>
         [HttpGet("{table}")] //allow access to the desired table
+        [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult GetMetricList([FromRoute] string table)
         {
             var result = metricRepository.GetTable(table);
@@ -58,6 +61,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{table}/{id}")]
+        [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult GetMetricDetails([FromRoute] string table, [FromRoute] string id)
         {
             var result = metricRepository.GetTableItem(table, id);
@@ -75,6 +79,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="item"></param>
         /// <returns></returns>
         [HttpPut("{table}/{id}")]
+        [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult PutMetricDetails([FromRoute] string table, [FromRoute] string id, [FromBody] JsonElement item)
         {
             var result = metricRepository.UpdateTableItem(table, id, item);
@@ -91,6 +96,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="item"></param>
         /// <returns></returns>
         [HttpPost("{table}")]
+        [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult PostMetricDetails([FromRoute] string table, [FromBody] JsonElement item)
         {
             var result = metricRepository.CreateTableItem(table, item);
@@ -107,6 +113,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{table}/{id}")]
+        [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult DeleteMetricItem([FromRoute] string table, [FromRoute] string id)
         {
             var result = metricRepository.DeleteTableItem(table, id);

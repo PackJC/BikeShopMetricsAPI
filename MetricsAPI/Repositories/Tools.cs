@@ -34,62 +34,107 @@ namespace BikeShopAPI.Repositories
             string key = "";
             string value = "";
             Dictionary<string, string> output = new Dictionary<string, string>();
-            //iterate through string until '\" is found. This is the start of the first key
-            for (int i = 0; i < jsonText.Length; i++)
+            //split input on field
+            List<string> fields = jsonText.Split(',').ToList();
+            for (int i = 0; i < fields.Count; i++)
             {
-                char c = jsonText[i];
-                if (jsonText [i] == '\"')
+                if (!fields[i].Contains(':'))
                 {
-                    //key found
-                    int j = 1; //offset to first char of key
-                    while(true)
+                    fields[i - 1] += "," + fields[i];
+                    fields.RemoveAt(i);
+                }
+            }
+            //clean up each field and add to dictionary
+            foreach (string s in fields)
+            {
+                bool keyStartFound = false;
+                bool keyEndFound = false;
+                bool valueStartFound = false;
+                bool valueEndFound = false;
+                bool isNumeric = false;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (!keyStartFound)
                     {
-                        if(jsonText[i+j] == '\"')
+                        //check if char is number or quote. True - add to key and start keyStartFound true. Else do nothing
+                        if (s[i] == '"' || Char.IsNumber(s[i]))
                         {
-                            //end of key found. start value
-                            if(jsonText[i + j + 3] != '\"')
+                            keyStartFound = true;
+                            if (Char.IsNumber(s[i]))
                             {
-                                j += 3;
-                                //value is a number. Read until ',' found.
-                                while(jsonText[i+j] != ',' && jsonText[i+j] != '\r')
-                                {
-                                    value += jsonText[i + j];
-                                    j++;
-                                }
-                                //key:value pair has been found. Search for next.
-                                output.Add(key, value);
-                                key = "";
-                                value = "";
-                                i += j;
-                                break;
+                                key += s[i];
                             }
-                            else
-                            {
-                                //value is a string
-                                j += 4;
-                                value += '\'';
-                                while(jsonText[i + j] != '\"')
-                                {
-                                    value += jsonText[i + j];
-                                    j++;
-                                }
-                                value += '\'';
-                                //key:value pair has been found. Search for next
-                                output.Add(key, value);
-                                key = "";
-                                value = "";
-                                i += j;
-                                break;
-
-                            }
+                            if (Char.IsNumber(s[i])) isNumeric = true;
+                        }
+                    }
+                    else if (keyStartFound && !keyEndFound)
+                    {
+                        if (s[i] == '"') //Text key
+                        {
+                            keyEndFound = true;
+                        }
+                        else if (isNumeric && !Char.IsNumber(s[i]) && s[i] != '.' ) //numeric Key (should not happen but good to have functionality)
+                        {
+                            keyEndFound = true;
+                            isNumeric = false; //reset for value
                         }
                         else
                         {
-                            key += jsonText[i + j];
-                            j++;
+                            key += s[i];
+                        }
+                    }
+                    else if (keyStartFound && keyEndFound && !valueStartFound)
+                    {
+                        if (s[i] == '"' || Char.IsNumber(s[i]))
+                        {
+                            valueStartFound = true;
+                            if (Char.IsNumber(s[i]))
+                            {
+                                isNumeric = true;
+                                value += s[i];
+                            }
+                            else
+                            {
+                                value += '\'';
+                            }
+                            
+                            if (i == s.Length - 1)
+                            {
+                                output.Add(key, value);
+                                break;
+                            }
+                        }
+                    }
+                    else if (keyStartFound && keyEndFound && valueStartFound && !valueEndFound)
+                    {
+                        if (s[i] == '"') //Text value
+                        {
+                            value += '\'';
+                            valueEndFound = true;
+                            output.Add(key, value);
+                            break;
+                        }
+                        else if ((isNumeric && !Char.IsNumber(s[i]) && s[i] != '.') || i == s.Length - 1) //numeric value
+                        {
+                            if (i == s.Length - 1) value += s[i];
+                            valueEndFound = true;
+                            output.Add(key, value);
+                            break;
+                        }
+                        else
+                        {
+                            value += s[i];
                         }
                     }
                 }
+                //reset variables
+                key = "";
+                value = "";
+                keyStartFound = false;
+                keyEndFound = false;
+                valueStartFound = false;
+                valueEndFound = false;
+                isNumeric = false;
             }
             output = ConvertDates(output);
             return output;
