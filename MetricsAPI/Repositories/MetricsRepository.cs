@@ -30,12 +30,28 @@ namespace BikeShopAPI.Repositories
         
         IConfiguration configuration;
         private IDictionary<string, string> pkDict = new Dictionary<string, string>(); //Hold Primary key configurations for each table
+        private IDictionary<string, string> AutoGenTables = new Dictionary<string, string>(); //list of tables that the post method shoult return Identity
         public MetricsRepository(IConfiguration _configuration)
         {
             configuration = _configuration;
-            pkDict.Add("customer", "customerid");
+            pkDict.Add("customer", "username");
             pkDict.Add("inventory", "inventoryid");
-            pkDict.Add("cart", "cartid");
+            pkDict.Add("cartitem", "username&itemid&itemtable");
+            pkDict.Add("cartlog", "logid");
+            pkDict.Add("wishlist", "listid");
+            pkDict.Add("wishlistlog", "logid");
+            pkDict.Add("wishlistitem", "itemid&itemtable");
+            pkDict.Add("itemviewlog", "logid");
+            pkDict.Add("userloginlog", "logid");
+            pkDict.Add("searchlog", "logid");
+
+            AutoGenTables.Add("cartlog", "logid");
+            AutoGenTables.Add("userloginlog", "logid");
+            AutoGenTables.Add("wishlistlog", "logid");
+            AutoGenTables.Add("searchlog", "logid");
+            AutoGenTables.Add("itemviewlog", "logid");
+            AutoGenTables.Add("wishlist", "listid");
+            AutoGenTables.Add("checkoutlog", "logid");
         }
         /// <summary>
         /// Read a record from the database
@@ -197,8 +213,22 @@ namespace BikeShopAPI.Repositories
                     qValues = qValues.Remove(qValues.Length - 1, 1); //remove last comma
                     qValues += ")";
                     query += qValues;
-                    result = SqlMapper.Query(conn, query, commandType: CommandType.Text);
-                    
+                    if (AutoGenTables.ContainsKey(table.ToLower()))
+                    {
+                        var param = new DynamicParameters();
+                        //param.Add(name: "IinsValue", value: 1, direction: ParameterDirection.Input);
+                        //For some reason the above code causes (ORA-03146: Invalid buffer length for TTC field) intermittantly about 50% of the requests, the insert is processed but the 'returning into' fails
+                        param.Add(name: "logid", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                        query += @" returning " + AutoGenTables[table] + " into :logid";
+
+                        var result2 = conn.Execute(query, param);
+                        var Id = param.Get<int>("logid");
+                        result = Id;
+                    }
+                    else
+                    {
+                        result = SqlMapper.Query(conn, query, commandType: CommandType.Text);
+                    }
                     SqlMapper.Query(conn, "COMMIT", commandType: CommandType.Text);
                     conn.Close();
                 }
