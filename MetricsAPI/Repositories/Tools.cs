@@ -181,5 +181,22 @@ namespace BikeShopAPI.Repositories
             }
             return output;
         }
+        /// <summary>
+        /// remove the non-numeric chars from a string and parse into int
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static int GetDirtyInt(string input)
+        {
+            string collect = "";
+            foreach (char c in input)
+            {
+                if (Char.IsNumber(c))
+                {
+                    collect += c;
+                }
+            }
+            return int.Parse(collect);
+        }
     }
 }

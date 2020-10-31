@@ -7,7 +7,8 @@ CREATE TABLE CUSTOMER (
     Address varchar(255) NOT NULL,
     Zip varchar(255) NOT NULL,
     State varchar(2) NOT NULL,
-    PaymentMethod varchar(255) NOT NULL
+    PaymentMethod varchar(255) NOT NULL,
+	PasswordHash varchar2(128)
 );
 
 CREATE TABLE INVENTORY (
