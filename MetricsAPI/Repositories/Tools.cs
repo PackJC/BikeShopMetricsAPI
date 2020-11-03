@@ -118,6 +118,10 @@ namespace BikeShopAPI.Repositories
                         {
                             if (i == s.Length - 1) value += s[i];
                             valueEndFound = true;
+                            if (value.Last() == '}')
+                            {
+                                value = value.Remove(value.Length - 1, 1); //remove '}' because it is breaking the code and I don't like it
+                            }
                             output.Add(key, value);
                             break;
                         }
@@ -147,16 +151,52 @@ namespace BikeShopAPI.Repositories
         public static Dictionary<string, string> ConvertDates(Dictionary<string, string> input)
         {
             Regex date = new Regex(@"'(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})'");
+            Regex timeStamp = new Regex(@"'(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})'");
             Dictionary<string, string> output = new Dictionary<string, string>(input);
             foreach(KeyValuePair<string, string> entry in input)
             {
                 if (date.IsMatch(entry.Value))
                 {
-                    DateTime dateString = DateTime.Parse(entry.Value.Substring(1,10));
-                    output[entry.Key] = '\'' + dateString.ToString("dd-MMMM-yy") + '\'';
+                    string value = "";
+                    foreach (char c in entry.Value)
+                    {
+                        if (c == 'T')
+                        {
+                            value += " ";
+                        }
+                        else
+                        {
+                            value += c;
+                        }
+                    }
+                    value = "TO_DATE(" + value + @", 'YYYY-MM-DD HH24:MI:SS')";
+                    output[entry.Key] = value;
+
+                }
+                if (timeStamp.IsMatch(entry.Value))
+                {
+                    string value = "TO_DATE(" + entry.Value + @", 'YYYY-MM-DD HH24:MI:SS')";
+                    output[entry.Key] = value;
                 }
             }
             return output;
+        }
+        /// <summary>
+        /// remove the non-numeric chars from a string and parse into int
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static int GetDirtyInt(string input)
+        {
+            string collect = "";
+            foreach (char c in input)
+            {
+                if (Char.IsNumber(c))
+                {
+                    collect += c;
+                }
+            }
+            return int.Parse(collect);
         }
     }
 }

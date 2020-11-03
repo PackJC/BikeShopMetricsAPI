@@ -17,6 +17,7 @@ using System.Data;
 using BikeShopAPI.Oracle;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 /// <summary>
 /// Namespace for repository
 /// </summary>
@@ -30,12 +31,29 @@ namespace BikeShopAPI.Repositories
         
         IConfiguration configuration;
         private IDictionary<string, string> pkDict = new Dictionary<string, string>(); //Hold Primary key configurations for each table
+        private IDictionary<string, string> AutoGenTables = new Dictionary<string, string>(); //list of tables that the post method shoult return Identity
+        private IDictionary<string, string> CustomGenTables = new Dictionary<string, string>(); //list tables with keys that require external auto key generation
         public MetricsRepository(IConfiguration _configuration)
         {
             configuration = _configuration;
-            pkDict.Add("customer", "customerid");
+            pkDict.Add("customer", "username");
             pkDict.Add("inventory", "inventoryid");
-            pkDict.Add("cart", "cartid");
+            pkDict.Add("cartitem", "username&itemid&itemtable");
+            pkDict.Add("cartlog", "logid");
+            pkDict.Add("wishlist", "listid");
+            pkDict.Add("wishlistlog", "logid");
+            pkDict.Add("wishlistitem", "itemid&itemtable");
+            pkDict.Add("itemviewlog", "logid");
+            pkDict.Add("userloginlog", "logid");
+            pkDict.Add("searchlog", "logid");
+
+            AutoGenTables.Add("cartlog", "logid");
+            AutoGenTables.Add("userloginlog", "logid");
+            AutoGenTables.Add("wishlistlog", "logid");
+            AutoGenTables.Add("searchlog", "logid");
+            AutoGenTables.Add("itemviewlog", "logid");
+            AutoGenTables.Add("wishlist", "listid");
+            AutoGenTables.Add("checkoutlog", "logid");
         }
         /// <summary>
         /// Read a record from the database
@@ -189,16 +207,114 @@ namespace BikeShopAPI.Repositories
                     //Iterate over each values dictionary key:Value pair and add key to query while adding value to qValues
                     foreach (KeyValuePair<string, string> entry in values) //input data to be updated
                     {
-                        query += " " + entry.Key + ",";
-                        qValues += " " + entry.Value + ",";
+                        if (AutoGenTables.ContainsKey(table.ToLower())) //check if primary key value will be unique, if not then ignore and let auto gen take care of it
+                        {
+                            if (entry.Key.ToLower() == AutoGenTables[table.ToLower()])
+                            { //this entry is for the primary key
+                                if (entry.Value == null)
+                                { //add it no problem, db can generate on null
+                                    query += " " + entry.Key + ",";
+                                    qValues += " " + entry.Value + ",";
+                                }
+                                else
+                                { //check if value will be unique
+                                    string pkquery = "SELECT * FROM " + table + " WHERE " + entry.Key + "=" + entry.Value;
+                                    List<dynamic> pkresult = conn.Query(pkquery).ToList();
+                                    if (pkresult.Count == 0)
+                                    {//record with pk does not exist
+                                        query += " " + entry.Key + ",";
+                                        qValues += " " + entry.Value + ",";
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                query += " " + entry.Key + ",";
+                                qValues += " " + entry.Value + ",";
+                            }
+                        }
+                        else
+                        {
+                            query += " " + entry.Key + ",";
+                            qValues += " " + entry.Value + ",";
+                        }
                     }
                     query = query.Remove(query.Length - 1, 1); //remove last comma
                     query += ") ";
                     qValues = qValues.Remove(qValues.Length - 1, 1); //remove last comma
                     qValues += ")";
                     query += qValues;
-                    result = SqlMapper.Query(conn, query, commandType: CommandType.Text);
-                    
+                    if (AutoGenTables.ContainsKey(table.ToLower()))
+                    {
+                        var param = new DynamicParameters();
+                        param.Add(name: "logid", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                        query += @" returning " + AutoGenTables[table] + " into :logid";
+
+                        var result2 = conn.Execute(query, param);
+                        var Id = param.Get<int>("logid");
+                        result = Id;
+                    }
+                    else if (CustomGenTables.ContainsKey(table.ToUpper()))
+                    {
+                        string idquery = "SELECT MAX(" + CustomGenTables[table.ToUpper()] + ") FROM " + table;
+                        result = conn.QueryFirstOrDefault<string>(idquery); //get first value as string
+                        string resultText = (result.ToString());
+                        int identity = Tools.GetDirtyInt(resultText); //get the number associated with the id
+                        identity++; //use next available identifier
+                        //rebuild query
+                        query = "INSERT INTO Metric." + table + " (";
+                        qValues = "VALUES (";
+                        bool ignoreAutoGen = false;
+                        foreach (KeyValuePair<string, string> entry in values) //input data to be updated
+                        {
+                            if (CustomGenTables.ContainsKey(table.ToUpper())) //check if primary key value will be unique, if not then ignore and let auto gen take care of it
+                            {
+                                if (entry.Key.ToUpper() == CustomGenTables[table.ToUpper()])
+                                { //this entry is for the primary key
+                                    if (entry.Value != null)
+                                    {
+                                        string pkquery = "SELECT * FROM " + table + " WHERE " + entry.Key + "=" + entry.Value;
+                                        List<dynamic> pkresult = conn.Query(pkquery).ToList();
+                                        if (pkresult.Count == 0)
+                                        {//record with pk does not exist
+                                            query += " " + entry.Key + ",";
+                                            qValues += " " + entry.Value + ",";
+                                            ignoreAutoGen = true;
+                                            result = entry.Value;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    query += " " + entry.Key + ",";
+                                    qValues += " " + entry.Value + ",";
+                                }
+                            }
+                            else
+                            {
+                                query += " " + entry.Key + ",";
+                                qValues += " " + entry.Value + ",";
+                            }
+                        }
+                        if (!ignoreAutoGen)
+                        {
+                            query += " " + CustomGenTables[table.ToUpper()];
+                            qValues += " " + identity;
+                        }
+                        else
+                        {
+                            query = query.Remove(query.Length - 1, 1); //remove last comma
+                            qValues = qValues.Remove(qValues.Length - 1, 1); //remove last comma
+                        }
+                        query += ") ";
+                        qValues += ")";
+                        query += qValues;
+                        SqlMapper.Query(conn, query, commandType: CommandType.Text);
+                    }
+                    else
+                    {
+                        result = SqlMapper.Query(conn, query, commandType: CommandType.Text);
+                    }
                     SqlMapper.Query(conn, "COMMIT", commandType: CommandType.Text);
                     conn.Close();
                 }
