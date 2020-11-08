@@ -14,14 +14,14 @@ using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data;
-using BikeShopAPI.Oracle;
+using MetricsAPI.Oracle;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 /// <summary>
 /// Namespace for repository
 /// </summary>
-namespace BikeShopAPI.Repositories
+namespace MetricsAPI.Repositories
 {
     /// <summary>
     /// Class that provides methods to connect to an oracle database and perform CRUD operations. Inherits from the IMetricsRepository interface
@@ -42,7 +42,7 @@ namespace BikeShopAPI.Repositories
             pkDict.Add("cartlog", "logid");
             pkDict.Add("wishlist", "listid");
             pkDict.Add("wishlistlog", "logid");
-            pkDict.Add("wishlistitem", "itemid&itemtable");
+            pkDict.Add("wishlistitem", "listid&itemid&itemtable");
             pkDict.Add("itemviewlog", "logid");
             pkDict.Add("userloginlog", "logid");
             pkDict.Add("searchlog", "logid");
@@ -54,6 +54,8 @@ namespace BikeShopAPI.Repositories
             AutoGenTables.Add("itemviewlog", "logid");
             AutoGenTables.Add("wishlist", "listid");
             AutoGenTables.Add("checkoutlog", "logid");
+            AutoGenTables.Add("roles", "id");
+            AutoGenTables.Add("users", "id");
         }
         /// <summary>
         /// Read a record from the database
@@ -248,7 +250,7 @@ namespace BikeShopAPI.Repositories
                     {
                         var param = new DynamicParameters();
                         param.Add(name: "logid", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                        query += @" returning " + AutoGenTables[table] + " into :logid";
+                        query += @" returning " + AutoGenTables[table.ToLower()] + " into :logid";
 
                         var result2 = conn.Execute(query, param);
                         var Id = param.Get<int>("logid");
@@ -359,6 +361,7 @@ namespace BikeShopAPI.Repositories
                     }
                     result = SqlMapper.Query(conn, query, commandType: CommandType.Text);
                     SqlMapper.Query(conn, "COMMIT", commandType: CommandType.Text);
+                    conn.Close();
 
                 }
             }

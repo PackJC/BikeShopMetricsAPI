@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace BikeShopAPI.Repositories
+namespace MetricsAPI.Repositories
 {
     /// <summary>
     /// Utility Methods

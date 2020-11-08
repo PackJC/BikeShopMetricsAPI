@@ -15,7 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace BikeShopAPI.Repositories
+namespace MetricsAPI.Repositories
 {
     /// <summary>
     /// Interface for connecting to database
