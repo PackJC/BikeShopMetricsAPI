@@ -3,7 +3,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 
-namespace BikeShopAPI.Oracle
+namespace MetricsAPI.Oracle
 {
     public class OracleDynamicParameters : SqlMapper.IDynamicParameters
     {

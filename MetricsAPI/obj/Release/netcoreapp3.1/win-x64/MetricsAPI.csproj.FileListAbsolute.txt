@@ -29,3 +29,4 @@ X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Release\ne
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Release\netcoreapp3.1\win-x64\MetricsAPI.dll
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Release\netcoreapp3.1\win-x64\MetricsAPI.pdb
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Release\netcoreapp3.1\win-x64\MetricsAPI.genruntimeconfig.cache
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Release\netcoreapp3.1\win-x64\MetricsAPI.csprojAssemblyReference.cache

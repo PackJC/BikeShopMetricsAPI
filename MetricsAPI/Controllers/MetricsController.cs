@@ -15,11 +15,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using BikeShopAPI.Repositories;
+using MetricsAPI.Repositories;
 using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
+using MetricsAPI;
+using Microsoft.AspNetCore.Authorization;
 
-namespace BikeShopAPI.Controllers
+namespace MetricsAPI.Controllers
 {
     /// <summary>
     /// Metrics Controller class. Inherits from ControllerBase
@@ -27,6 +29,7 @@ namespace BikeShopAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("_myAllowSpecificOrigins")]
+    [AuthorizeUserRoleFilter]
     public class MetricsController : ControllerBase
     {
         /// <summary>
@@ -43,8 +46,10 @@ namespace BikeShopAPI.Controllers
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
+        
         [HttpGet("{table}")] //allow access to the desired table
         [EnableCors("_myAllowSpecificOrigins")]
+        //[AuthorizeUserRoleFilter]
         public ActionResult GetMetricList([FromRoute] string table)
         {
             var result = metricRepository.GetTable(table);
@@ -60,6 +65,7 @@ namespace BikeShopAPI.Controllers
         /// <param name="table"></param>
         /// <param name="id"></param>
         /// <returns></returns>
+        //[AuthorizeUserRoleFilter]
         [HttpGet("{table}/{id}")]
         [EnableCors("_myAllowSpecificOrigins")]
         public ActionResult GetMetricDetails([FromRoute] string table, [FromRoute] string id)

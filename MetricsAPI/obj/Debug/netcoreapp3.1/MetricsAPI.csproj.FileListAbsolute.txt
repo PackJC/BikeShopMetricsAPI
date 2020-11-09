@@ -22,8 +22,6 @@ X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netc
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.csprojAssemblyReference.cache
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.AssemblyInfoInputs.cache
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.AssemblyInfo.cs
-X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.csproj.CoreCompileInputs.cache
-X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.MvcApplicationPartsAssemblyInfo.cache
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.RazorTargetAssemblyInfo.cache
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.csproj.CopyComplete
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\staticwebassets\MetricsAPI.StaticWebAssets.Manifest.cache
@@ -31,3 +29,15 @@ X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netc
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.dll
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.pdb
 X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.genruntimeconfig.cache
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.csproj.CoreCompileInputs.cache
+X:\Home\School\SE II\MetricsTeamAPI\BikeShopMetricsAPI\MetricsAPI\obj\Debug\netcoreapp3.1\MetricsAPI.MvcApplicationPartsAssemblyInfo.cache
