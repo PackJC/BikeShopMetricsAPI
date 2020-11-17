@@ -18,6 +18,7 @@ using MetricsAPI.Oracle;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
+using System.Configuration;
 /// <summary>
 /// Namespace for repository
 /// </summary>
@@ -37,15 +38,20 @@ namespace MetricsAPI.Repositories
         {
             configuration = _configuration;
             pkDict.Add("customer", "username");
-            pkDict.Add("inventory", "inventoryid");
-            pkDict.Add("cartitem", "username&itemid&itemtable");
             pkDict.Add("cartlog", "logid");
-            pkDict.Add("wishlist", "listid");
             pkDict.Add("wishlistlog", "logid");
-            pkDict.Add("wishlistitem", "listid&itemid&itemtable");
             pkDict.Add("itemviewlog", "logid");
             pkDict.Add("userloginlog", "logid");
             pkDict.Add("searchlog", "logid");
+            pkDict.Add("checkoutlog", "logid");
+            pkDict.Add("tablefieldaccess", "categorytableid&fieldname");
+            pkDict.Add("category", "categoryid");
+            pkDict.Add("categorytable", "tableid");
+            pkDict.Add("tablelist", "tablename");
+            pkDict.Add("rolerights", "roleid&tablename");
+            pkDict.Add("roles", "id");
+            pkDict.Add("userroles", "userid&roleid");
+            pkDict.Add("users", "id");
 
             AutoGenTables.Add("cartlog", "logid");
             AutoGenTables.Add("userloginlog", "logid");
@@ -56,6 +62,9 @@ namespace MetricsAPI.Repositories
             AutoGenTables.Add("checkoutlog", "logid");
             AutoGenTables.Add("roles", "id");
             AutoGenTables.Add("users", "id");
+            AutoGenTables.Add("category", "categoryid");
+            AutoGenTables.Add("categorytable", "tableid");
+
         }
         /// <summary>
         /// Read a record from the database
@@ -378,6 +387,7 @@ namespace MetricsAPI.Repositories
         /// <returns></returns>
         public IDbConnection GetConnection()
         {
+            //string connectionString = configuration.GetConnectionString("MetricsConnection");
             var connectionString = "data source=segfault.asuscomm.com:1522/orcl.asuscomm.com;password=segfault4350;user id=Metric;";
             var conn = new OracleConnection(connectionString);
             return conn;

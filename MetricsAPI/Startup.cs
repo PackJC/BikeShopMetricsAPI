@@ -44,8 +44,11 @@ namespace MetricsAPI
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["Jwt:Issuer"],
+                    //ValidIssuer = "segfault.asuscomm.com",
                     ValidAudience = Configuration["Jwt:Issuer"],
+                    //ValidAudience = "segfault.asuscomm.com",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey"))
                 };
             });
             services.AddCors(options =>
@@ -69,7 +72,7 @@ namespace MetricsAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseAuthentication();
+            //app.UseAuthentication();
             app.UseHttpsRedirection();
 
             app.UseRouting();

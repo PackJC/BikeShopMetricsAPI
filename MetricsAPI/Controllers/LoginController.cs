@@ -15,6 +15,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using MetricsAPI.Repositories;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace MetricsAPI.Controllers
 {
@@ -107,6 +108,7 @@ namespace MetricsAPI.Controllers
 
         public IDbConnection GetConnection()
         {
+            //string connectionString = _config.GetConnectionString("MetricsConnection");
             var connectionString = "data source=segfault.asuscomm.com:1522/orcl.asuscomm.com;password=segfault4350;user id=Metric;";
             var conn = new OracleConnection(connectionString);
             return conn;
@@ -114,11 +116,11 @@ namespace MetricsAPI.Controllers
 
         private string GenerateJSONWebToken(UserModel userInfo)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")); //error on standalone server
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
+            var token = new JwtSecurityToken("segfault.asuscomm.com",
+              "segfault.asuscomm.com",
               null,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);

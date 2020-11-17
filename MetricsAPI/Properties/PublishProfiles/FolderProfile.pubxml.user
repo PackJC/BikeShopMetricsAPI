@@ -7,4 +7,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>X:\Home\School\SE II\MetricsAPI_LIVE\Publish</_PublishTargetUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MetricsConnection">
+      <Value>data source=segfault.asuscomm.com:1522/orcl.asuscomm.com%3bpassword=segfault4350%3buser id=Metric%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>
